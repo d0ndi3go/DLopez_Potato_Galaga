@@ -1,14 +1,13 @@
 # File created by: Diego Lopez
 
 # screen
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 600
+HEIGHT = 800
 
 #sprites
 PLAYER_ACC = 1
-PLAYER_FRICTION = -0.3
+PLAYER_SPEED = 1.5
 MOB_ACC = 1
-MOB_FRICTION = -0.3
 
 #color
 BLACK = (0,0,0)
