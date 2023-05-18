@@ -80,7 +80,7 @@ class Bullet(Sprite):
         Sprite.__init__(self)
         self.game = game
         self.image = pg.Surface((5, 10))  # Create a surface for the bullet
-        self.image.fill(WHITE)  # Set the color of the bullet
+        self.image.fill(WHITE)  # color of the bullet
         self.rect = self.image.get_rect()
         self.rect.topright = (WIDTH-300, HEIGHT-200)
 
@@ -101,10 +101,10 @@ class Scoreboard(Sprite):
         self.game = game
         self.font = pg.font.Font(None, 50)
         self.color = BLACK
-        self.score = 100  # initialize the score to 100
+        self.score = 1 #sets score to 1
         self.image = self.font.render("Score: {}".format(self.score), True, self.color)
         self.rect = self.image.get_rect()
-        self.rect.topright = (WIDTH-10, 10)
+        self.rect.topright = (WIDTH-10, HEIGHT-100)
 
     def update(self):
         hits = pg.sprite.spritecollide(self.game.player, self.game.enemies, False) # check for collisions
