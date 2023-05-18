@@ -17,25 +17,39 @@ class Player(Sprite):
         self.image = self.image_orig.copy()
         self.rect = self.image.get_rect()
         self.radius = int(self.rect.width * .85 / 2)
-        self.pos = vec(0, 0)
+        self.pos = vec(WIDTH / 2, HEIGHT - 100)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.cofric = 0.1
         self.canjump = False
         self.last_update = pg.time.get_ticks()
         self.left_key = pg.K_a
+        self.boundary_left = 0
+        self.boundary_right = WIDTH
+        self.boundary_top = 0
+        self.boundary_bottom = HEIGHT
+        self.speed = 5 
 
-    def input(self):
-        keystate = pg.key.get_pressed()
-        if keystate[pg.K_a]:
-            self.acc.y = -PLAYER_ACC
-        if keystate[pg.K_d]:
-            self.acc.y = PLAYER_ACC
 
     def update(self):
-        self.input()
-        self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
+        self.vel = vec(0, 0)  # Reset the velocity
+
+        # Handle left and right movement
+        keystate = pg.key.get_pressed()
+        if keystate[pg.K_a]:
+            self.vel.x = -self.speed
+        elif keystate[pg.K_d]:
+            self.vel.x = self.speed
+
+        # Update the position based on velocity
+        self.pos += self.vel
+
+        # Apply boundary limits
+        if self.pos.x < 0:
+            self.pos.x = 0
+        if self.pos.x > WIDTH:
+            self.pos.x = WIDTH
+
         self.rect.midbottom = self.pos
 
 
@@ -70,16 +84,20 @@ class Bullet(Sprite):
     def __init__(self, game):
         Sprite.__init__(self)
         self.game = game
-        self.image = pg.image.load("bullet.jpg")
+        self.image = pg.Surface((5, 10))  # Create a surface for the bullet
+        self.image.fill(WHITE)  # Set the color of the bullet
         self.rect = self.image.get_rect()
+
     def update(self):
-        self.rect.x -= 5
+        self.rect.y -= 5  # Move the bullet upward
         if self.rect.bottom < 0:
             self.kill()
+
     def collide_with_mob(self, mob):
         if pg.sprite.collide_rect(self, mob):
             mob.kill()
             self.kill()
+
 
 class Scoreboard(Sprite):
     def __init__(self, game):

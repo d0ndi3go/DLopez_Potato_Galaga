@@ -49,21 +49,24 @@ class Game:
         self.playing = True
         while self.playing:
             self.clock.tick(FPS)
-            self.events()
+            self.events()  # Call the events() method to handle events
             self.update()
             self.draw()
 
     def events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
+                if pg.key.get_pressed()[pg.K_SPACE]:
+                    continue  # Ignore the QUIT event if SPACE is also pressed
                 self.playing = False
                 self.running = False
-            if event.type == pg.KEYDOWN:
+            elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     # Space key is pressed, create a bullet and add it to the game
                     bullet = Bullet(self)
                     self.all_sprites.add(bullet)
                     self.bullets.add(bullet)
+
     
     def update(self):
         self.all_sprites.update()
@@ -75,7 +78,7 @@ class Game:
 
     def draw(self):
         self.screen.fill(BLACK)
-        self.draw_text("a and d to move space to shoot.", 24, WHITE, WIDTH/2, HEIGHT/2)
+        self.draw_text("a and d to move, space to shoot.", 24, WHITE, WIDTH/2, HEIGHT/2)
         self.all_sprites.draw(self.screen)
 
         # is this a method or a function?
@@ -95,5 +98,6 @@ g = Game()
 # kick off the game loop
 while g.running:
     g.new()
+    g.run()
 
 pg.quit()
