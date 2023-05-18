@@ -44,12 +44,12 @@ class Game:
         self.scoreboard = Scoreboard(self)
         self.all_sprites.add(self.scoreboard)
 
-
+# this be what to run when the code is on
     def run(self):
         self.playing = True
         while self.playing:
             self.clock.tick(FPS)
-            self.events()  # Call the events() method to handle events
+            self.events() 
             self.update()
             self.draw()
 
@@ -80,8 +80,6 @@ class Game:
         self.screen.fill(BLACK)
         self.draw_text("a and d to move, space to shoot.", 24, WHITE, WIDTH/2, HEIGHT/2)
         self.all_sprites.draw(self.screen)
-
-        # is this a method or a function?
         pg.display.flip()
 
     def draw_text(self, text, size, color, x, y):

@@ -32,24 +32,19 @@ class Player(Sprite):
 
 
     def update(self):
-        self.vel = vec(0, 0)  # Reset the velocity
-
+        self.vel = vec(0, 0)
         # Handle left and right movement
         keystate = pg.key.get_pressed()
         if keystate[pg.K_a]:
             self.vel.x = -self.speed
         elif keystate[pg.K_d]:
             self.vel.x = self.speed
-
-        # Update the position based on velocity
         self.pos += self.vel
-
-        # Apply boundary limits
+        # creates boundary limits
         if self.pos.x < 0:
             self.pos.x = 0
         if self.pos.x > WIDTH:
             self.pos.x = WIDTH
-
         self.rect.midbottom = self.pos
 
 
@@ -87,13 +82,14 @@ class Bullet(Sprite):
         self.image = pg.Surface((5, 10))  # Create a surface for the bullet
         self.image.fill(WHITE)  # Set the color of the bullet
         self.rect = self.image.get_rect()
+        self.rect.topright = (WIDTH-300, HEIGHT-200)
 
     def update(self):
         self.rect.y -= 5  # Move the bullet upward
         if self.rect.bottom < 0:
             self.kill()
 
-    def collide_with_mob(self, mob):
+    def collide_with_mob(self, mob): #kills the bullet when it hits the mob and also kills the mob
         if pg.sprite.collide_rect(self, mob):
             mob.kill()
             self.kill()
