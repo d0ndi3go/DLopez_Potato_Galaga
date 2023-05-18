@@ -23,21 +23,24 @@ class Game:
         pg.display.set_caption("Potato Galaga")
         self.clock = pg.time.Clock()
         self.running = True
-        print(self.screen)
-    
+        self.load_data()
+        self.new()
+
     def load_data(self):
         self.player_img = pg.image.load(path.join(img_folder, "potato.jpg")).convert()
 
     def new(self):
         # starting a new game
         self.score = 0
-        self.load_data()
         self.all_sprites = pg.sprite.Group()
-        self.platforms = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.player = Player(self)
         self.all_sprites.add(self.player)
+
+        self.mob = Mob(50, 50, DARK_RED)
+        self.all_sprites.add(self.mob)
+        self.enemies.add(self.mob)
         
         self.scoreboard = Scoreboard(self)
         self.all_sprites.add(self.scoreboard)
@@ -48,20 +51,28 @@ class Game:
         while self.playing:
             self.clock.tick(FPS)
             self.events()
+            self.update()
             self.draw()
 
     def events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                if self.playing:
-                    self.playing = False
+                self.playing = False
                 self.running = False
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
-                # Space key is pressed, create a bullet and add it to the game
-                bullet = Bullet()
-                self.bullets.append(bullet)
+                    # Space key is pressed, create a bullet and add it to the game
+                    bullet = Bullet(self)
+                    self.all_sprites.add(bullet)
+                    self.bullets.add(bullet)
+    
+    def update(self):
+        self.all_sprites.update()
 
+        # Check for bullet-enemy collisions
+        hits = pg.sprite.groupcollide(self.enemies, self.bullets, True, True)
+        for mob, bullets in hits.items():
+            self.score += 1
 
     def draw(self):
         self.screen.fill(BLACK)
@@ -78,10 +89,6 @@ class Game:
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x,y)
         self.screen.blit(text_surface, text_rect)
-
-    def get_mouse_now(self):
-        x,y = pg.mouse.get_pos()
-        return (x,y)
 
 # instantiate the game class...
 g = Game()
