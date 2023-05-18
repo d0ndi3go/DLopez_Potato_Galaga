@@ -70,7 +70,7 @@ class Bullet(Sprite):
     def __init__(self, game):
         Sprite.__init__(self)
         self.game = game
-        self.image = pg.image.load("bullet.png")
+        self.image = pg.image.load("bullet.jpg")
         self.rect = self.image.get_rect()
     def update(self):
         self.rect.x -= 5
@@ -80,7 +80,6 @@ class Bullet(Sprite):
         if pg.sprite.collide_rect(self, mob):
             mob.kill()
             self.kill()
-
 
 class Scoreboard(Sprite):
     def __init__(self, game):
