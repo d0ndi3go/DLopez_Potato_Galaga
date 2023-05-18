@@ -10,6 +10,7 @@ from os import path
 
 game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, "images")
+
 # create game class in order to pass properties to the sprites file
 
 class Game:
