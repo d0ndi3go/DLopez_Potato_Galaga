@@ -57,12 +57,12 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 if pg.key.get_pressed()[pg.K_SPACE]:
-                    continue  # Ignore the QUIT event if SPACE is also pressed
+                    continue  # Ignore the quit event if space button is also pressed
                 self.playing = False
                 self.running = False
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
-                    # Space key is pressed, create a bullet and add it to the game
+                    # Space key is pressed and then it creates a bullet
                     bullet = Bullet(self)
                     self.all_sprites.add(bullet)
                     self.bullets.add(bullet)
